@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hiring and onboarding tool for CarePal / Impact Guru · Jesse van de Zand</title>
+<meta name="description" content="Case study: an internal hiring and onboarding tool for field-sales roles at CarePal / Impact Guru in India, built end to end with AI development tools by Jesse van de Zand.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#14233B; --text:#2B3445; --muted:#5B6576; --line:#D8DDE5; --wash:#F2F4F7;
+  --marigold:#E39B12; --marigold-soft:#FCF1DC; --field:#1D7465; --field-soft:#E2F2EE; --stop:#B43C2E;
+  --serif:'Source Serif 4',Georgia,serif; --sans:'Source Sans 3',Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{margin:0;font-family:var(--sans);color:var(--text);background:#fff;font-size:18px;line-height:1.55}
+a{color:var(--ink);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--marigold);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+.text{max-width:700px}
+header.top{border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;justify-content:space-between;align-items:center;padding-top:16px;padding-bottom:16px;font-size:16px}
+header.top a{text-decoration:none;font-weight:600}
+header.top nav a{margin-left:22px;font-weight:400;color:var(--muted)}
+h1,h2,h3{font-family:var(--serif);color:var(--ink);line-height:1.15;font-weight:700}
+h1{font-size:clamp(34px,5vw,54px);margin:56px 0 18px;letter-spacing:-0.5px;max-width:860px}
+h2{font-size:30px;margin:0 0 14px}
+h3{font-size:21px;margin:0 0 6px}
+.lede{font-size:21px;color:var(--text);max-width:720px;margin:0 0 22px}
+.results{margin:0 0 8px;padding:0;list-style:none;max-width:720px}
+.results li{padding:7px 0 7px 22px;position:relative;border-top:1px solid var(--line)}
+.results li:last-child{border-bottom:1px solid var(--line)}
+.results li::before{content:"";position:absolute;left:2px;top:17px;width:9px;height:9px;border-radius:50%;background:var(--field)}
+
+/* the pipeline: the one memorable element */
+.pipeline{margin:44px 0 0;padding:34px 0 40px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.pipeline ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(8,1fr);gap:0;position:relative;counter-reset:s}
+.pipeline ol::before{content:"";position:absolute;left:6%;right:6%;top:15px;height:3px;background:linear-gradient(90deg,var(--marigold) 0 72%,var(--field) 72% 100%)}
+.pipeline li{position:relative;text-align:center;padding:0 6px;counter-increment:s}
+.pipeline .dot{display:block;width:33px;height:33px;margin:0 auto 12px;border-radius:50%;background:#fff;border:3px solid var(--marigold);font:700 15px/27px var(--sans);color:var(--ink);position:relative}
+.pipeline .dot::after{content:counter(s)}
+.pipeline li.field .dot{border-color:var(--field);background:var(--field);color:#fff}
+.pipeline strong{display:block;color:var(--ink);font-size:16px;line-height:1.25}
+.pipeline span.d{display:block;color:var(--muted);font-size:14px;line-height:1.35;margin-top:4px}
+.pipeline .cap{margin:22px 0 0;color:var(--muted);font-size:15px}
+@media (max-width:860px){
+  .pipeline ol{grid-template-columns:1fr;gap:14px}
+  .pipeline ol::before{left:15px;right:auto;top:6px;bottom:6px;width:3px;height:auto;background:linear-gradient(180deg,var(--marigold) 0 75%,var(--field) 75% 100%)}
+  .pipeline li{text-align:left;padding-left:52px;min-height:33px}
+  .pipeline .dot{position:absolute;left:0;top:0;margin:0}
+}
+
+section.block{padding:64px 0 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+@media (max-width:860px){.two{grid-template-columns:1fr}}
+.block p{margin:0 0 14px}
+.block ul{margin:0 0 14px;padding-left:20px}
+.block li{margin:0 0 6px}
+
+/* mock screens */
+.screen{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff;margin:26px 0 8px}
+.screen .bar{display:flex;align-items:center;gap:10px;background:var(--ink);color:#fff;font-size:14px;padding:9px 14px}
+.screen .bar b{font-weight:600}
+.screen .bar .pill{margin-left:auto;background:rgba(255,255,255,.14);border-radius:999px;padding:2px 10px;font-size:12.5px}
+.screen .body{padding:16px;font-size:14px;line-height:1.4;overflow-x:auto}
+.screen .bar{flex-wrap:wrap}
+html,body{overflow-x:hidden}
+@media (max-width:600px){header.top nav a{margin-left:14px}.kanban{grid-template-columns:repeat(4,150px)}table.mini{min-width:520px}}
+.note{font-size:14px;color:var(--muted);margin:0 0 6px}
+.kanban{display:grid;grid-template-columns:repeat(4,minmax(150px,1fr));gap:12px;overflow-x:auto}
+.col{background:var(--wash);border-radius:8px;padding:10px}
+.col h4{margin:0 0 8px;font:600 13px var(--sans);color:var(--muted)}
+.card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:8px 9px;margin-bottom:8px}
+.card .n{font-weight:600;color:var(--ink)}
+.card .m{color:var(--muted);font-size:12.5px}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;border-radius:4px;padding:1px 6px;margin-top:5px}
+.tag.ai{background:var(--marigold-soft);color:#7A4E00}
+.tag.sel{background:var(--field-soft);color:var(--field)}
+.tag.warn{background:#FBE3E0;color:var(--stop)}
+table.mini{width:100%;border-collapse:collapse;font-size:13.5px}
+table.mini th,table.mini td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line)}
+table.mini th{color:var(--muted);font-weight:600}
+table.mini td.num,table.mini th.num{text-align:right;font-variant-numeric:tabular-nums}
+.delta{color:var(--stop);font-weight:600}
+.score{display:grid;grid-template-columns:130px 1fr 34px;gap:8px;align-items:center;margin:6px 0}
+.score .b{height:8px;border-radius:4px;background:var(--wash);overflow:hidden}
+.score .b i{display:block;height:100%;background:var(--marigold)}
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:700px){.board{grid-template-columns:1fr}}
+.flag{color:var(--stop);font-size:12.5px;font-weight:600}
+
+.how{background:var(--wash);margin-top:72px;padding:56px 0}
+.how .text p{margin:0 0 14px}
+footer{padding:40px 0 56px;font-size:16px;color:var(--muted)}
+footer a{margin-right:20px}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a href="../">Jesse van de Zand</a>
+  <nav><a href="https://github.com/vandezand-ctrl">GitHub</a><a href="https://www.linkedin.com/in/jesse-van-de-zand-a4a08310/">LinkedIn</a></nav>
+</div></header>
+
+<main>
+<div class="wrap">
+  <h1>Hiring and onboarding tool for CarePal / Impact Guru</h1>
+  <p class="lede">CarePal / Impact Guru is a health-finance company in India with about 500 employees. Its field-sales teams work from hospitals across the country. I built the internal tool that takes every field-sales hire from the request for a new person to the day that person starts in the field, for two business units.</p>
+  <ul class="results">
+    <li>After it went live, the HR team went from six to four people while HR productivity went up.</li>
+    <li>37 active users in four roles: admins, approvers, the talent acquisition team and heads of department.</li>
+    <li>214 candidates and 68 requisitions tracked across two business units and 35 cities.</li>
+    <li>Built end to end with AI development tools, working directly with the CEO. In daily use.</li>
+  </ul>
+
+  <div class="pipeline" aria-labelledby="flow-h">
+    <h2 id="flow-h" class="text">From requisition to on field</h2>
+    <ol>
+      <li><span class="dot" aria-hidden="true"></span><strong>Requisition</strong><span class="d">Raised per hospital and city, new hire or replacement</span></li>
+      <li><span class="dot" aria-hidden="true"></span><strong>Approval</strong><span class="d">Routed to named approvers</span></li>
+      <li><span class="dot" aria-hidden="true"></span><strong>AI CV screen</strong><span class="d">Score out of 5 with reasons; low scores go to review</span></li>
+      <li><span class="dot" aria-hidden="true"></span><strong>HR round</strong><span class="d">Checklist per business unit must be complete to accept</span></li>
+      <li><span class="dot" aria-hidden="true"></span><strong>Interviews</strong><span class="d">Round 1 and 2, feedback delay tracked</span></li>
+      <li><span class="dot" aria-hidden="true"></span><strong>Offer</strong><span class="d">Decision summary and documents in one place</span></li>
+      <li class="field"><span class="dot" aria-hidden="true"></span><strong>Training</strong><span class="d">Flagged after 30 days</span></li>
+      <li class="field"><span class="dot" aria-hidden="true"></span><strong>On field</strong><span class="d">Retention per city; exits recorded with a reason</span></li>
+    </ol>
+    <p class="cap">Requisitions, candidates and new joiners each carry a status and dates, so the dashboard shows where each city's hiring stands against plan.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="block" aria-labelledby="screens-h">
+    <div class="text">
+      <h2 id="screens-h">What the team works with</h2>
+      <p>The live tool holds candidates' personal data and ID documents, so it is not shown here. The screens below are illustrations of its main views, redrawn with invented data.</p>
+    </div>
+
+    <div class="screen" role="img" aria-label="Illustration of the dashboard table: hiring against plan per city, with invented figures">
+      <div class="bar"><b>Dashboard</b> Hiring against plan by city <span class="pill">Synced with the hiring plan sheet</span></div>
+      <div class="body">
+        <table class="mini">
+          <thead><tr><th>City</th><th class="num">Plan</th><th class="num">Headcount</th><th class="num">Open requisitions</th><th class="num">In interviews</th><th class="num">Offered</th><th class="num">Gap</th></tr></thead>
+          <tbody>
+            <tr><td>Pune</td><td class="num">14</td><td class="num">11</td><td class="num">3</td><td class="num">5</td><td class="num">1</td><td class="num delta">-3</td></tr>
+            <tr><td>Jaipur</td><td class="num">9</td><td class="num">9</td><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="num">0</td></tr>
+            <tr><td>Lucknow</td><td class="num">12</td><td class="num">8</td><td class="num">4</td><td class="num">6</td><td class="num">2</td><td class="num delta">-4</td></tr>
+            <tr><td>Kochi</td><td class="num">7</td><td class="num">6</td><td class="num">1</td><td class="num">2</td><td class="num">1</td><td class="num delta">-1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="note">Illustration, invented figures. The live dashboard reads targets from the company's hiring plan spreadsheet and writes new joiners back to it.</p>
+
+    <div class="two">
+      <div>
+        <div class="screen" role="img" aria-label="Illustration of the candidate board with AI scores, using invented candidates">
+          <div class="bar"><b>Candidates</b> Board view</div>
+          <div class="body">
+            <div class="kanban">
+              <div class="col"><h4>Screened</h4>
+                <div class="card"><div class="n">Candidate 104</div><div class="m">Pune · notice 15 days</div><span class="tag ai">AI 4.2 / 5</span></div>
+                <div class="card"><div class="n">Candidate 117</div><div class="m">Lucknow · immediate</div><span class="tag ai">AI 3.1 / 5</span></div>
+              </div>
+              <div class="col"><h4>Round 1</h4>
+                <div class="card"><div class="n">Candidate 098</div><div class="m">Kochi · notice 30 days</div><span class="tag ai">AI 4.6 / 5</span></div>
+              </div>
+              <div class="col"><h4>Selected</h4>
+                <div class="card"><div class="n">Candidate 091</div><div class="m">Pune</div><span class="tag sel">Offer pending</span></div>
+              </div>
+              <div class="col"><h4>Needs action</h4>
+                <div class="card"><div class="n">Candidate 086</div><div class="m">Lucknow</div><span class="tag warn">No open requisition</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="note">Illustration, invented candidates. A candidate whose requisition is closed is flagged, not lost.</p>
+      </div>
+      <div>
+        <div class="screen" role="img" aria-label="Illustration of an AI CV screening result with scores per criterion, invented values">
+          <div class="bar"><b>Candidate 104</b> AI screen</div>
+          <div class="body">
+            <div class="score"><span>Sales</span><span class="b"><i style="width:90%"></i></span><span>4.5</span></div>
+            <div class="score"><span>Domain</span><span class="b"><i style="width:80%"></i></span><span>4.0</span></div>
+            <div class="score"><span>Relationship</span><span class="b"><i style="width:84%"></i></span><span>4.2</span></div>
+            <div class="score"><span>Experience</span><span class="b"><i style="width:76%"></i></span><span>3.8</span></div>
+            <div class="score"><span>Consistency</span><span class="b"><i style="width:88%"></i></span><span>4.4</span></div>
+            <p style="margin:12px 0 0">Total 4.2 / 5. The recruiter reads the reasons and decides. Low scores go to a review step first.</p>
+          </div>
+        </div>
+        <p class="note">Illustration, invented values. The criteria are the ones the tool scores on.</p>
+      </div>
+    </div>
+
+    <div class="screen" role="img" aria-label="Illustration of the onboarding board: joined, in training and on field, with invented names">
+      <div class="bar"><b>Employees</b> Onboarding</div>
+      <div class="body">
+        <div class="board">
+          <div class="col"><h4>Joined, not yet in training</h4><div class="card"><div class="n">Joiner 31</div><div class="m">Kochi · joined 3 days ago</div></div></div>
+          <div class="col"><h4>In training</h4><div class="card"><div class="n">Joiner 27</div><div class="m">Pune · 12 days</div></div><div class="card"><div class="n">Joiner 22</div><div class="m">Lucknow · 34 days</div><div class="flag">In training over 30 days</div></div></div>
+          <div class="col"><h4>On field in the last 30 days</h4><div class="card"><div class="n">Joiner 19</div><div class="m">Jaipur · on field since 2 weeks</div></div></div>
+        </div>
+      </div>
+    </div>
+    <p class="note">Illustration, invented joiners.</p>
+  </section>
+
+  <section class="block" aria-labelledby="roles-h">
+    <div class="two">
+      <div>
+        <h2 id="roles-h">Who sees what</h2>
+        <ul>
+          <li>Sign-in with Google. New users join as talent acquisition; admins change roles.</li>
+          <li>Every user is scoped by city and business unit, so a recruiter sees only the requisitions and candidates of their own cities.</li>
+          <li>Admins set the screening checklists, interview questions and up to eight custom questions per form, per department, without code changes.</li>
+          <li>AI CV screening can be switched off by an admin.</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Fitted to how the team works</h2>
+        <ul>
+          <li>Reads targets from the company's hiring plan spreadsheet and writes new joiners back to it. A banner warns when the last sync is out of date; failed write-backs email the admins.</li>
+          <li>Excel downloads on every main list.</li>
+          <li>Recruiter performance per person: sourcing, screening, interviews, offers, joins and where candidates drop out.</li>
+          <li>Documents stored per candidate: CV, offer letter, ID proof, relieving letter and appointment letter.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="how" aria-labelledby="how-h">
+  <div class="wrap"><div class="text">
+    <h2 id="how-h">How I built it</h2>
+    <p>I work directly for the CEO and own the tool's prioritization and roadmap. I identify the business need, discuss it with management and other stakeholders, I decide how it works, and with AI I write the code. I built it end to end without design or engineering support.</p>
+    <p>The code is TypeScript and JavaScript, versioned in GitHub with 440+ commits. Access is role-based, and the AI screening gives the recruiter a score with reasons; the recruiter decides.</p>
+    <p>The repository is private because it holds the company's logic and data. I am happy to walk through the live tool in a call.</p>
+  </div></div>
+</section>
+</main>
+
+<footer><div class="wrap">
+  <a href="https://github.com/vandezand-ctrl">github.com/vandezand-ctrl</a>
+  <a href="https://www.linkedin.com/in/jesse-van-de-zand-a4a08310/">LinkedIn</a>
+  <a href="mailto:jessevandezand@gmail.com">jessevandezand@gmail.com</a>
+</div></footer>
+</body>
+</html>
